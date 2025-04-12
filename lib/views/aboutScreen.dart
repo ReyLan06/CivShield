@@ -22,21 +22,21 @@ class AboutPage extends StatelessWidget {
         telegramLink: 'https://t.me/Rey_Lan06'
     ),
     TeamMember(
-        name: 'Nombre Apellido #4',
+        name: 'Emanuel Crucel',
         photoUrl: 'https://example.com/foto2.jpg',
-        phoneNumber: '+18091112222',
-        telegramLink: '#'
+        phoneNumber: '829-505-6261',
+        telegramLink: 'https://t.me/MaxjoseC'
     ),
     TeamMember(
         name: 'Nombre Apellido #5',
         photoUrl: 'https://example.com/foto2.jpg',
-        phoneNumber: '+18091112222',
+        phoneNumber: '#',
         telegramLink: '#'
     ),
     TeamMember(
         name: 'Nombre Apellido #6',
         photoUrl: 'https://example.com/foto2.jpg',
-        phoneNumber: '+18091112222',
+        phoneNumber: '#',
         telegramLink: '#'
     ),
   ];
