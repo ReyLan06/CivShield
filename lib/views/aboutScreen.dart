@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 class AboutPage extends StatelessWidget {
   final List<TeamMember> teamMembers = [
     TeamMember(
-      name: 'Alexander Bautista',
+      name: 'Alexander Bautista Hernández',
       photoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/320px-Wikipedia-logo-v2.svg.png',
       phoneNumber: '8095551234',
       telegramLink: 'https://t.me/alexander_bautista'
@@ -24,20 +24,20 @@ class AboutPage extends StatelessWidget {
     TeamMember(
         name: 'Emanuel Crucel',
         photoUrl: 'https://example.com/foto2.jpg',
-        phoneNumber: '829-505-6261',
+        phoneNumber: '8295056261',
         telegramLink: 'https://t.me/MaxjoseC'
     ),
     TeamMember(
-        name: 'Nombre Apellido #5',
+        name: 'Angel Manuel Valdez',
         photoUrl: 'https://example.com/foto2.jpg',
-        phoneNumber: '#',
-        telegramLink: '#'
+        phoneNumber: '8097833625',
+        telegramLink: 'https://t.me/Angel7736s'
     ),
     TeamMember(
-        name: 'Nombre Apellido #6',
+        name: 'Julio Jazer Ramirez Zorrilla',
         photoUrl: 'https://example.com/foto2.jpg',
-        phoneNumber: '#',
-        telegramLink: '#'
+        phoneNumber: '+1 5619619832',
+        telegramLink: 'https://t.me/xXJazerXx'
     ),
   ];
 
