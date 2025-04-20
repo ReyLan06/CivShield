@@ -137,6 +137,12 @@ class _PantallaInicioState extends State<PantallaInicio> {
                 },
               ),
               ListTile(
+                title: const Text('Historia'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/historia');
+                },
+              ),
+              ListTile(
                 title: const Text('Acerca de'),
                 onTap: () {
                   Navigator.pushNamed(context, '/acerca');
