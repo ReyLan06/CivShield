@@ -119,9 +119,21 @@ class _PantallaInicioState extends State<PantallaInicio> {
                 },
               ),
               ListTile(
+                title: const Text('Servicios'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/servicios');
+                },
+              ),
+              ListTile(
                 title: const Text('Quiero ser voluntario'),
                 onTap: () {
                   Navigator.pushNamed(context, '/register');
+                },
+              ),
+              ListTile(
+                title: const Text('Videos'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/videos');
                 },
               ),
               ListTile(
