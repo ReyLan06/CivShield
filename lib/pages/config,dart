@@ -1,0 +1,191 @@
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class CambiarContrasenaPage extends StatefulWidget {
+  @override
+  _CambiarContrasenaPageState createState() => _CambiarContrasenaPageState();
+}
+
+class _CambiarContrasenaPageState extends State<CambiarContrasenaPage> {
+  final TextEditingController _claveAnteriorController = TextEditingController();
+  final TextEditingController _claveNuevaController = TextEditingController();
+  bool _cargando = false;
+  String _mensaje = '';
+
+  // Método para cambiar la contraseña
+  Future<void> _cambiarContraseña() async {
+    setState(() {
+      _cargando = true;
+      _mensaje = '';
+    });
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+
+    if (token == null) {
+      setState(() {
+        _mensaje = 'No se encontró el token de autenticación.';
+        _cargando = false;
+      });
+      return;
+    }
+
+    String claveAnterior = _claveAnteriorController.text;
+    String claveNueva = _claveNuevaController.text;
+
+    if (claveAnterior.isEmpty || claveNueva.isEmpty) {
+      setState(() {
+        _mensaje = 'Por favor ingresa ambas contraseñas.';
+        _cargando = false;
+      });
+      return;
+    }
+
+    final response = await http.post(
+      Uri.parse('https://adamix.net/defensa_civil/def/cambiar_clave.php'),
+      body: {
+        'token': token,
+        'clave_anterior': claveAnterior,
+        'clave_nueva': claveNueva,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+
+      if (data['exito'] == true) {
+        setState(() {
+          _mensaje = 'Clave cambiada correctamente.';
+          _cargando = false;
+        });
+      } else {
+        setState(() {
+          _mensaje = data['mensaje'] ?? 'Error desconocido.';
+          _cargando = false;
+        });
+      }
+    } else {
+      setState(() {
+        _mensaje = 'Error de conexión, por favor intenta nuevamente.';
+        _cargando = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.red[700],  // Color rojo para dar sensación de seguridad
+        title: Text(
+          'Cambiar Contraseña',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            color: Colors.white,
+          ),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Título
+            Text(
+              "Actualiza tu contraseña para mantener tu cuenta segura.",
+              style: TextStyle(
+                color: Colors.red[700], 
+                fontSize: 16, 
+                fontWeight: FontWeight.w500
+              ),
+            ),
+            SizedBox(height: 30),
+
+            // Campo de Contraseña Actual
+            TextFormField(
+              controller: _claveAnteriorController,
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: 'Contraseña Actual',
+                labelStyle: TextStyle(color: Colors.red[700]),
+                filled: true,
+                fillColor: Colors.grey[200],
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.red[700]!, width: 2),
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
+
+            // Campo de Nueva Contraseña
+            TextFormField(
+              controller: _claveNuevaController,
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: 'Nueva Contraseña',
+                labelStyle: TextStyle(color: Colors.red[700]),
+                filled: true,
+                fillColor: Colors.grey[200],
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.red[700]!, width: 2),
+                ),
+              ),
+            ),
+            SizedBox(height: 30),
+
+            // Indicador de carga y botón
+            if (_cargando)
+              Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.red[700]!),
+                ),
+              ),
+            if (!_cargando)
+              ElevatedButton(
+                onPressed: _cambiarContraseña,
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.red[700], // Color rojo para seguridad
+                  padding: EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  'Cambiar Contraseña',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
+            SizedBox(height: 16),
+
+            // Mensaje de error o éxito
+            if (_mensaje.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Text(
+                  _mensaje,
+                  style: TextStyle(
+                    color: _mensaje.contains('correctamente') ? Colors.green : Colors.red,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
