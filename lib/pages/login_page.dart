@@ -35,12 +35,12 @@ class _LoginPageState extends State<LoginPage> {
       final data = json.decode(response.body);
 
       if (data['exito'] == true) {
-        String token = data['datos']['token'];
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('token', token);
+        await prefs.setString('token', data['datos']['token']);
         await prefs.setString('nombre', data['datos']['nombre']);
         await prefs.setString('apellido', data['datos']['apellido']);
         await prefs.setString('correo', data['datos']['correo']);
+        await prefs.setBool('logueado', true); // ✅ Guardar que está logueado
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Bienvenido, ${data['datos']['nombre']}')),
@@ -62,10 +62,10 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,  // Fondo oscuro, representando seriedad
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text('Iniciar Sesión'),
-        backgroundColor: Colors.yellow[800],  // Color que evoca alerta
+        backgroundColor: Colors.yellow[800],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -74,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             Icon(
               Icons.warning_amber_outlined,
-              color: Colors.yellow[800],  // Ícono representativo de advertencia
+              color: Colors.yellow[800],
               size: 100,
             ),
             SizedBox(height: 30),
@@ -113,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
             ElevatedButton(
               onPressed: _login,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.yellow[800],  // Botón con color amarillo
+                backgroundColor: Colors.yellow[800],
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 100),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
